@@ -1,0 +1,38 @@
+[
+  {
+    "id": "H1",
+    "item": "PyTorch version strategy",
+    "why": "Repo pins PyTorch 0.4 (2018). PyPI no longer hosts it; only the CPU wheel resolves. GPU training on modern drivers is unverified. A human must choose: CPU-only on pinned versions, or adapt code to modern PyTorch - and decide whether adaptation is acceptable for a reproduction claim.",
+    "evidence_url": "https://github.com/jakesnell/prototypical-networks#install-dependencies"
+  },
+  {
+    "id": "H2",
+    "item": "Total training budget for Omniglot",
+    "why": "The paper never states total episodes or stopping rule. Repo defaults (10000 epochs, early-stop patience 200) are repo choices, not paper statements. A human must set the budget and record it in the run.",
+    "evidence_url": "https://github.com/jakesnell/prototypical-networks/blob/master/scripts/train/few_shot/run_train.py"
+  },
+  {
+    "id": "H3",
+    "item": "torchnet (pytorch/tnt) license",
+    "why": "License reads NOASSERTION on GitHub. Needed at runtime (imported by train.py). Human/legal review required before redistribution or institutional deployment.",
+    "evidence_url": "https://github.com/pytorch/tnt"
+  },
+  {
+    "id": "H4",
+    "item": "miniImageNet data acquisition and license",
+    "why": "Official repo ships splits only; images derive from ILSVRC-2012 (research-only, non-commercial). Human must own the acquisition path and license call. Excluded from prototype scope.",
+    "evidence_url": "https://github.com/jakesnell/prototypical-networks/tree/master/data/miniImagenet"
+  },
+  {
+    "id": "H5",
+    "item": "Statistical comparison policy",
+    "why": "No random seed anywhere; results are averages over 1000 (Omniglot) or 600 (miniImageNet) randomly generated episodes. A human must define what counts as close enough (e.g., within reported confidence intervals) - the AI only reports deltas.",
+    "evidence_url": "https://arxiv.org/pdf/1703.05175"
+  },
+  {
+    "id": "H6",
+    "item": "Final reproduction verdict",
+    "why": "By PaperLab hard rules, only a human (professor / lead researcher) may declare whether the run supports the paper's claims. The AI assembles evidence; the verdict field stays empty until signed.",
+    "evidence_url": "https://arxiv.org/abs/1703.05175"
+  }
+]

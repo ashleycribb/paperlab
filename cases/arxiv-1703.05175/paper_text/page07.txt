@@ -1,0 +1,81 @@
+Table 3: Zero-shot classification accuracies on CUB-200.
+Model
+
+Image
+Features
+
+50-way Acc.
+0-shot
+
+ALE [1]
+SJE [2]
+S AMPLE C LUSTERING [17]
+SJE [2]
+DS-SJE [23]
+DA-SJE [23]
+P ROTO . N ETS (O URS )
+
+Fisher
+AlexNet
+AlexNet
+GoogLeNet
+GoogLeNet
+GoogLeNet
+GoogLeNet
+
+26.9%
+40.3%
+44.3%
+50.1%
+50.4%
+50.9%
+54.6%
+
+their splits to divide the classes into 100 training, 50 validation, and 50 test. For images we use 1,024dimensional features extracted by applying GoogLeNet [28] to middle, upper left, upper right, lower
+left, and lower right crops of the original and horizontally-flipped image2 . At test time we use only
+the middle crop of the original image. For class meta-data we use the 312-dimensional continuous
+attribute vectors provided with the CUB dataset. These attributes encode various characteristics of
+the bird species such as their color, shape, and feather patterns.
+We learned a simple linear mapping on top of both the 1024-dimensional image features and the
+312-dimensional attribute vectors to produce a 1,024-dimensional output space. For this dataset we
+found it helpful to normalize the class prototypes (embedded attribute vectors) to be of unit length,
+since the attribute vectors come from a different domain than the images. Training episodes were
+constructed with 50 classes and 10 query images per class. The embeddings were optimized via SGD
+with Adam at a fixed learning rate of 10−4 and weight decay of 10−5 . Early stopping on validation
+loss was used to determine the optimal number of epochs for retraining on the training plus validation
+set.
+Table 3 shows that we achieve state-of-the-art results by a large margin when compared to methods
+utilizing attributes as class meta-data. We compare our method to other embedding approaches, such
+as ALE [1], SJE [2], and DS-SJE/DA-SJE [23]. We also compare to a recent clustering approach
+[17] which trains an SVM on a learned feature space obtained by fine-tuning AlexNet [14]. These
+zero-shot classification results demonstrate that our approach is general enough to be applied even
+when the data points (images) are from a different domain relative to the classes (attributes).
+
+4
+
+Related Work
+
+The literature on metric learning is vast [15, 5]; we summarize here the work most relevant to our
+proposed method. Neighborhood Components Analysis (NCA) [8] learns a Mahalanobis distance to
+maximize K-nearest-neighbor’s (KNN) leave-one-out accuracy in the transformed space. Salakhutdinov and Hinton [27] extend NCA by using a neural network to perform the transformation. Large
+margin nearest neighbor (LMNN) classification [30] also attempts to optimize KNN accuracy but
+does so using a hinge loss that encourages the local neighborhood of a point to contain other points
+with the same label. The DNet-KNN [21] is another margin-based method that improves upon LMNN
+by utilizing a neural network to perform the embedding instead of a simple linear transformation.
+Of these, our method is most similar to the non-linear extension of NCA [27] because we use a
+neural network to perform the embedding and we optimize a softmax based on Euclidean distances
+in the transformed space, as opposed to a margin loss. A key distinction between our approach
+and non-linear NCA is that we form a softmax directly over classes, rather than individual points,
+computed from distances to each class’s prototype representation. This allows each class to have a
+concise representation independent of the number of data points and obviates the need to store the
+entire support set to make predictions.
+Our approach is also similar to the nearest class mean approach [19], where each class is represented
+by the mean of its examples. This approach was developed to rapidly incorporate new classes into
+a classifier without retraining, however it relies on a linear embedding and was designed to handle
+2
+
+Features downloaded from https://github.com/reedscot/cvpr2016.
+
+7
+
+

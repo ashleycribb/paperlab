@@ -1,0 +1,100 @@
+Algorithm 1 Training episode loss computation for prototypical networks. N is the number of
+examples in the training set, K is the number of classes in the training set, NC ≤ K is the number
+of classes per episode, NS is the number of support examples per class, NQ is the number of query
+examples per class. R ANDOM S AMPLE(S, N ) denotes a set of N elements chosen uniformly at
+random from set S, without replacement.
+Input: Training set D = {(x1 , y1 ), . . . , (xN , yN )}, where each yi ∈ {1, . . . , K}. Dk denotes the
+subset of D containing all elements (xi , yi ) such that yi = k.
+Output: The loss J for a randomly generated training episode.
+V ← R ANDOM S AMPLE({1, . . . , K}, NC )
+. Select class indices for episode
+for k in {1, . . . , NC } do
+Sk ← R ANDOM S AMPLE(DVk , NS )
+. Select support examples
+Qk ← R ANDOM S AMPLE(DVk \ Sk , NQ )
+. Select query examples
+X
+1
+ck ←
+fφ (xi )
+. Compute prototype from support examples
+NC
+(xi ,yi )∈Sk
+
+end for
+J ←0
+for k in {1, . . . , NC } do
+for (x, y) in Qk do "
+#
+X
+1
+J ←J+
+d(fφ (x), ck )) + log
+exp(−d(fφ (x), ck ))
+NC NQ
+k0
+end for
+end for
+2.3
+
+. Initialize loss
+
+. Update loss
+
+Prototypical Networks as Mixture Density Estimation
+
+For a particular class of distance functions, known as regular Bregman divergences [4], the prototypical networks algorithm is equivalent to performing mixture density estimation on the support set with
+an exponential family density. A regular Bregman divergence dϕ is defined as:
+dϕ (z, z0 ) = ϕ(z) − ϕ(z0 ) − (z − z0 )T ∇ϕ(z0 ),
+
+(3)
+
+where ϕ is a differentiable, strictly convex function of the Legendre type. Examples of Bregman
+divergences include squared Euclidean distance kz − z0 k2 and Mahalanobis distance.
+Prototype computation can be viewed in terms of hard clustering on the support set, with one cluster
+per class and each support point assigned to its corresponding class cluster. It has been shown [4]
+for Bregman divergences that the cluster representative achieving minimal distance to its assigned
+points is the cluster mean. Thus the prototype computation in Equation (1) yields optimal cluster
+representatives given the support set labels when a Bregman divergence is used.
+Moreover, any regular exponential family distribution pψ (z|θ) with parameters θ and cumulant
+function ψ can be written in terms of a uniquely determined regular Bregman divergence [4]:
+pψ (z|θ) = exp{zT θ − ψ(θ) − gψ (z)} = exp{−dϕ (z, µ(θ)) − gϕ (z)}
+
+(4)
+
+Consider now a regular exponential family mixture model with parameters Γ = {θk , πk }K
+k=1 :
+p(z|Γ) =
+
+K
+X
+
+πk pψ (z|θk ) =
+
+k=1
+
+K
+X
+
+πk exp(−dϕ (z, µ(θk )) − gϕ (z))
+
+(5)
+
+k=1
+
+Given Γ, inference of the cluster assignment y for an unlabeled point z becomes:
+πk exp(−dϕ (z, µ(θk )))
+0
+k0 πk exp(−dϕ (z, µ(θk )))
+
+p(y = k|z) = P
+
+(6)
+
+For an equally-weighted mixture model with one cluster per class, cluster assignment inference (6) is
+equivalent to query class prediction (2) with fφ (x) = z and ck = µ(θk ). In this case, prototypical
+networks are effectively performing mixture density estimation with an exponential family distribution
+determined by dϕ . The choice of distance therefore specifies modeling assumptions about the classconditional data distribution in the embedding space.
+3
+
+

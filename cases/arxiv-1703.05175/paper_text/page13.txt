@@ -1,0 +1,234 @@
+Table 5: Comparison of matching and prototypical networks on miniImageNet under cosine vs.
+Euclidean distance, 5-way vs. 20-way, and 1-shot vs. 5-shot. All experiments use a shared encoder
+for both support and query points with embedding dimension 1,600 (architecture and training details
+are provided in Section 3.2 of the main paper). Classification accuracy is averaged over 600 randomly
+generated episodes from the test set and 95% confidence intervals are shown.
+
+Model
+
+Dist.
+
+Train Episodes
+Shot Query Way
+
+M ATCHING N ETS / P ROTONETS
+M ATCHING N ETS / P ROTONETS
+M ATCHING N ETS / P ROTONETS
+M ATCHING N ETS / P ROTONETS
+
+Cosine
+Euclid.
+Cosine
+Euclid.
+
+1
+1
+1
+1
+
+15
+15
+15
+15
+
+M ATCHING N ETS
+M ATCHING N ETS
+M ATCHING N ETS
+M ATCHING N ETS
+P ROTONETS
+P ROTONETS
+P ROTONETS
+P ROTONETS
+
+Cosine
+Euclid.
+Cosine
+Euclid.
+Cosine
+Euclid.
+Cosine
+Euclid.
+
+5
+5
+5
+5
+5
+5
+5
+5
+
+15
+15
+15
+15
+15
+15
+15
+15
+
+5-way Acc.
+1-shot
+
+5-shot
+
+5
+5
+20
+20
+
+38.82 ± 0.69%
+46.61 ± 0.78%
+43.63 ± 0.76%
+49.17 ± 0.83%
+
+44.54 ± 0.56%
+59.84 ± 0.64%
+51.34 ± 0.64%
+62.66 ± 0.71%
+
+5
+5
+20
+20
+5
+5
+20
+20
+
+46.43 ± 0.74%
+46.43 ± 0.78%
+46.46 ± 0.79%
+47.99 ± 0.79%
+42.48 ± 0.74%
+44.53 ± 0.76%
+42.45 ± 0.73%
+43.57 ± 0.82%
+
+54.60 ± 0.62%
+60.97 ± 0.67%
+55.77 ± 0.69%
+63.66 ± 0.68%
+51.23 ± 0.63%
+65.77 ± 0.70%
+51.48 ± 0.70%
+68.20 ± 0.66%
+
+Table 6: Effect of training “way” (number of classes per training episode) for prototypical networks
+with Euclidean distance on miniImageNet. The number of query points per class in training episodes
+was fixed at 15. Classification accuracy is averaged over 600 randomly generated episodes from the
+test set and 95% confidence intervals are shown.
+
+Model
+
+Dist.
+
+Train Episodes
+Shot Query Way
+
+P ROTONETS
+P ROTONETS
+P ROTONETS
+P ROTONETS
+P ROTONETS
+P ROTONETS
+
+Euclid.
+Euclid.
+Euclid.
+Euclid.
+Euclid.
+Euclid.
+
+1
+1
+1
+1
+1
+1
+
+15
+15
+15
+15
+15
+15
+
+P ROTONETS
+P ROTONETS
+P ROTONETS
+P ROTONETS
+P ROTONETS
+P ROTONETS
+
+Euclid.
+Euclid.
+Euclid.
+Euclid.
+Euclid.
+Euclid.
+
+5
+5
+5
+5
+5
+5
+
+15
+15
+15
+15
+15
+15
+
+13
+
+5-way Acc.
+1-shot
+
+5-shot
+
+5
+10
+15
+20
+25
+30
+
+46.14 ± 0.77%
+48.27 ± 0.79%
+48.60 ± 0.76%
+48.57 ± 0.79%
+48.51 ± 0.83%
+49.42 ± 0.78%
+
+61.36 ± 0.68%
+64.18 ± 0.68%
+64.62 ± 0.66%
+65.04 ± 0.69%
+64.63 ± 0.69%
+65.38 ± 0.68%
+
+5
+10
+15
+20
+25
+30
+
+44.53 ± 0.76%
+45.09 ± 0.79%
+44.07 ± 0.80%
+43.57 ± 0.82%
+43.32 ± 0.79%
+41.38 ± 0.81%
+
+65.77 ± 0.70%
+67.49 ± 0.70%
+68.03 ± 0.66%
+68.20 ± 0.66%
+67.66 ± 0.68%
+66.79 ± 0.66%
+
+

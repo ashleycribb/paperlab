@@ -1,0 +1,89 @@
+c2
+
+c2
+x
+
+c1
+
+x
+
+c1
+
+v1
+
+v2
+
+c3
+
+c3
+
+(a) Few-shot
+
+(b) Zero-shot
+
+v3
+
+Figure 1: Prototypical networks in the few-shot and zero-shot scenarios. Left: Few-shot prototypes
+ck are computed as the mean of embedded support examples for each class. Right: Zero-shot
+prototypes ck are produced by embedding class meta-data vk . In either case, embedded query points
+are classified via a softmax over distances to class prototypes: pφ (y = k|x) ∝ exp(−d(fφ (x), ck )).
+
+Classification is performed, as in the few-shot scenario, by finding the nearest class prototype for an
+embedded query point.
+In this paper, we formulate prototypical networks for both the few-shot and zero-shot settings. We
+draw connections to matching networks in the one-shot setting, and analyze the underlying distance
+function used in the model. In particular, we relate prototypical networks to clustering [4] in order to
+justify the use of class means as prototypes when distances are computed with a Bregman divergence,
+such as squared Euclidean distance. We find empirically that the choice of distance is vital, as
+Euclidean distance greatly outperforms the more commonly used cosine similarity. On several
+benchmark tasks, we achieve state-of-the-art performance. Prototypical networks are simpler and
+more efficient than recent meta-learning algorithms, making them an appealing approach to few-shot
+and zero-shot learning.
+
+2
+
+Prototypical Networks
+
+2.1
+
+Notation
+
+In few-shot classification we are given a small support set of N labeled examples S =
+{(x1 , y1 ), . . . , (xN , yN )} where each xi ∈ RD is the D-dimensional feature vector of an example
+and yi ∈ {1, . . . , K} is the corresponding label. Sk denotes the set of examples labeled with class k.
+2.2
+
+Model
+
+Prototypical networks compute an M -dimensional representation ck ∈ RM , or prototype, of each
+class through an embedding function fφ : RD → RM with learnable parameters φ. Each prototype
+is the mean vector of the embedded support points belonging to its class:
+ck =
+
+1
+|Sk |
+
+X
+
+fφ (xi )
+
+(1)
+
+(xi ,yi )∈Sk
+
+Given a distance function d : RM × RM → [0, +∞), prototypical networks produce a distribution
+over classes for a query point x based on a softmax over distances to the prototypes in the embedding
+space:
+exp(−d(fφ (x), ck ))
+pφ (y = k | x) = P
+(2)
+0
+k0 exp(−d(fφ (x), ck ))
+Learning proceeds by minimizing the negative log-probability J(φ) = − log pφ (y = k | x) of the
+true class k via SGD. Training episodes are formed by randomly selecting a subset of classes from
+the training set, then choosing a subset of examples within each class to act as the support set and a
+subset of the remainder to serve as query points. Pseudocode to compute the loss J(φ) for a training
+episode is provided in Algorithm 1.
+2
+
+

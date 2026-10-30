@@ -1,0 +1,11 @@
+{
+  "paper": {
+    "id": "arXiv:1703.05175v2",
+    "title": "Prototypical Networks for Few-shot Learning",
+    "url": "https://arxiv.org/abs/1703.05175",
+    "pdf_url": "https://arxiv.org/pdf/1703.05175"
+  },
+  "official_code": "https://github.com/jakesnell/prototypical-networks (MIT)",
+  "scope": "Omniglot few-shot classification (Section 3.1). miniImageNet and CUB experiments out of scope for the run guide; their reported results are still extracted.",
+  "selected_because": "Open access on arXiv; official MIT code; MIT-licensed Omniglot dataset; CPU-scale training; tabulated results with confidence intervals."
+}

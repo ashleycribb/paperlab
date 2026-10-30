@@ -1,0 +1,169 @@
+{
+  "checked_at": "2026-10-30T18:05:58Z",
+  "checked_by": "PaperLab CLI (automated existence checks)",
+  "rules": "Existence checks only. A pass means an item exists or appears on the cited page. It is NOT a statement that the paper reproduces, is correct, or is valid.",
+  "checks": [
+    {
+      "item": "arXiv abstract page for 1703.05175",
+      "check": "resolves with HTTP 200",
+      "result": "pass",
+      "evidence_url": "https://arxiv.org/abs/1703.05175"
+    },
+    {
+      "item": "arXiv PDF (v2, 13 pages)",
+      "check": "resolves with HTTP 200",
+      "result": "pass",
+      "evidence_url": "https://arxiv.org/pdf/1703.05175"
+    },
+    {
+      "item": "Official code repository",
+      "check": "resolves with HTTP 200 (MIT)",
+      "result": "pass",
+      "evidence_url": "https://github.com/jakesnell/prototypical-networks"
+    },
+    {
+      "item": "Omniglot dataset repository",
+      "check": "resolves with HTTP 200 (MIT)",
+      "result": "pass",
+      "evidence_url": "https://github.com/brendenlake/omniglot"
+    },
+    {
+      "item": "Omniglot images_background.zip",
+      "check": "resolves with HTTP 200",
+      "result": "pass",
+      "evidence_url": "https://github.com/brendenlake/omniglot/raw/master/python/images_background.zip"
+    },
+    {
+      "item": "Omniglot images_evaluation.zip",
+      "check": "resolves with HTTP 200",
+      "result": "pass",
+      "evidence_url": "https://github.com/brendenlake/omniglot/raw/master/python/images_evaluation.zip"
+    },
+    {
+      "item": "torchnet dependency (pytorch/tnt)",
+      "check": "resolves with HTTP 200",
+      "result": "pass",
+      "evidence_url": "https://github.com/pytorch/tnt"
+    },
+    {
+      "item": "PyTorch 0.4.0 CPU wheel (cp36, linux_x86_64)",
+      "check": "resolves with HTTP 200",
+      "result": "pass",
+      "evidence_url": "https://download.pytorch.org/whl/cpu/torch-0.4.0-cp36-cp36m-linux_x86_64.whl"
+    },
+    {
+      "item": "PyTorch 0.4.0 on PyPI",
+      "check": "version exists on PyPI (expected: fail \u2014 removed)",
+      "result": "fail (HTTP 404)",
+      "evidence_url": "https://pypi.org/pypi/torch/0.4.0/json"
+    },
+    {
+      "item": "numpy 1.14.5 on PyPI",
+      "check": "version exists on PyPI",
+      "result": "pass",
+      "evidence_url": "https://pypi.org/pypi/numpy/1.14.5/json"
+    },
+    {
+      "item": "tqdm latest on PyPI",
+      "check": "package exists on PyPI",
+      "result": "pass",
+      "evidence_url": "https://pypi.org/pypi/tqdm/json"
+    },
+    {
+      "item": "LR schedule quote",
+      "check": "quote appears on page 5",
+      "result": "pass",
+      "evidence_url": "page 5"
+    },
+    {
+      "item": "episode composition quote",
+      "check": "quote appears on page 5",
+      "result": "pass",
+      "evidence_url": "page 5"
+    },
+    {
+      "item": "image size quote",
+      "check": "quote appears on page 5",
+      "result": "pass",
+      "evidence_url": "page 5"
+    },
+    {
+      "item": "evaluation protocol quote",
+      "check": "quote appears on page 5",
+      "result": "pass",
+      "evidence_url": "page 5"
+    },
+    {
+      "item": "miniImageNet eval quote (Table 2 caption)",
+      "check": "quote appears on page 6",
+      "result": "pass",
+      "evidence_url": "page 6"
+    },
+    {
+      "item": "Omniglot 5-way 1-shot 98.8% (Table 1)",
+      "check": "value appears on page 5",
+      "result": "pass",
+      "evidence_url": "page 5"
+    },
+    {
+      "item": "miniImageNet 5-way 1-shot 49.42 \u00b1 0.78% (Table 2)",
+      "check": "value appears on page 6",
+      "result": "pass",
+      "evidence_url": "page 6"
+    },
+    {
+      "item": "Hardware requirements stated in paper",
+      "check": "no GPU/CPU/hardware mentions in setup text (expected: pass = not stated)",
+      "result": "pass",
+      "evidence_url": "pages 1-13"
+    },
+    {
+      "item": "Random seed stated in paper",
+      "check": "no seed mention (expected: pass = not stated)",
+      "result": "pass",
+      "evidence_url": "pages 1-13"
+    }
+  ],
+  "summary": {
+    "total": 20,
+    "passed": 19
+  },
+  "needs_a_human": [
+    {
+      "id": "H1",
+      "item": "PyTorch version strategy",
+      "why": "Repo pins PyTorch 0.4 (2018). PyPI no longer hosts it; only the CPU wheel resolves. GPU training on modern drivers is unverified. A human must choose: CPU-only on pinned versions, or adapt code to modern PyTorch - and decide whether adaptation is acceptable for a reproduction claim.",
+      "evidence_url": "https://github.com/jakesnell/prototypical-networks#install-dependencies"
+    },
+    {
+      "id": "H2",
+      "item": "Total training budget for Omniglot",
+      "why": "The paper never states total episodes or stopping rule. Repo defaults (10000 epochs, early-stop patience 200) are repo choices, not paper statements. A human must set the budget and record it in the run.",
+      "evidence_url": "https://github.com/jakesnell/prototypical-networks/blob/master/scripts/train/few_shot/run_train.py"
+    },
+    {
+      "id": "H3",
+      "item": "torchnet (pytorch/tnt) license",
+      "why": "License reads NOASSERTION on GitHub. Needed at runtime (imported by train.py). Human/legal review required before redistribution or institutional deployment.",
+      "evidence_url": "https://github.com/pytorch/tnt"
+    },
+    {
+      "id": "H4",
+      "item": "miniImageNet data acquisition and license",
+      "why": "Official repo ships splits only; images derive from ILSVRC-2012 (research-only, non-commercial). Human must own the acquisition path and license call. Excluded from prototype scope.",
+      "evidence_url": "https://github.com/jakesnell/prototypical-networks/tree/master/data/miniImagenet"
+    },
+    {
+      "id": "H5",
+      "item": "Statistical comparison policy",
+      "why": "No random seed anywhere; results are averages over 1000 (Omniglot) or 600 (miniImageNet) randomly generated episodes. A human must define what counts as close enough (e.g., within reported confidence intervals) - the AI only reports deltas.",
+      "evidence_url": "https://arxiv.org/pdf/1703.05175"
+    },
+    {
+      "id": "H6",
+      "item": "Final reproduction verdict",
+      "why": "By PaperLab hard rules, only a human (professor / lead researcher) may declare whether the run supports the paper's claims. The AI assembles evidence; the verdict field stays empty until signed.",
+      "evidence_url": "https://arxiv.org/abs/1703.05175"
+    }
+  ]
+}

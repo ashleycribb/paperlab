@@ -1,0 +1,103 @@
+Table 1: Few-shot classification accuracies on Omniglot.
+Model
+
+Dist.
+
+Fine Tune
+
+M ATCHING N ETWORKS [29]
+M ATCHING N ETWORKS [29]
+N EURAL S TATISTICIAN [6]
+P ROTOTYPICAL N ETWORKS (O URS )
+
+Cosine
+Cosine
+Euclid.
+
+N
+Y
+N
+N
+
+5-way Acc.
+1-shot
+5-shot
+
+20-way Acc.
+1-shot
+5-shot
+
+98.1%
+97.9%
+98.1%
+98.8%
+
+93.8%
+93.5%
+93.2%
+96.0%
+
+98.9%
+98.7%
+99.5%
+99.7%
+
+98.5%
+98.7%
+98.1%
+98.9%
+
+in advance, or they could be learned from e.g., raw text [7]. Modifying prototypical networks to deal
+with the zero-shot case is straightforward: we simply define ck = gϑ (vk ) to be a separate embedding
+of the meta-data vector. An illustration of the zero-shot procedure for prototypical networks as
+it relates to the few-shot procedure is shown in Figure 1. Since the meta-data vector and query
+point come from different input domains, we found it was helpful empirically to fix the prototype
+embedding g to have unit length, however we do not constrain the query embedding f .
+
+3
+
+Experiments
+
+For few-shot learning, we performed experiments on Omniglot [16] and the miniImageNet version
+of ILSVRC-2012 [26] with the splits proposed by Ravi and Larochelle [22]. We perform zero-shot
+experiments on the 2011 version of the Caltech UCSD bird dataset (CUB-200 2011) [31].
+3.1
+
+Omniglot Few-shot Classification
+
+Omniglot [16] is a dataset of 1623 handwritten characters collected from 50 alphabets. There are 20
+examples associated with each character, where each example is drawn by a different human subject.
+We follow the procedure of Vinyals et al. [29] by resizing the grayscale images to 28 × 28 and
+augmenting the character classes with rotations in multiples of 90 degrees. We use 1200 characters
+plus rotations for training (4,800 classes in total) and the remaining classes, including rotations, for
+test. Our embedding architecture mirrors that used by Vinyals et al. [29] and is composed of four
+convolutional blocks. Each block comprises a 64-filter 3 × 3 convolution, batch normalization layer
+[10], a ReLU nonlinearity and a 2 × 2 max-pooling layer. When applied to the 28 × 28 Omniglot
+images this architecture results in a 64-dimensional output space. We use the same encoder for
+embedding both support and query points. All of our models were trained via SGD with Adam [11].
+We used an initial learning rate of 10−3 and cut the learning rate in half every 2000 episodes. No
+regularization was used other than batch normalization.
+We trained prototypical networks using Euclidean distance in the 1-shot and 5-shot scenarios with
+training episodes containing 60 classes and 5 query points per class. We found that it is advantageous
+to match the training-shot with the test-shot, and to use more classes (higher “way”) per training
+episode rather than fewer. We compare against various baselines, including the neural statistician
+[6] and both the fine-tuned and non-fine-tuned versions of matching networks [29]. We computed
+classification accuracy for our models averaged over 1000 randomly generated episodes from the test
+set. The results are shown in Table 1 and to our knowledge they represent the state-of-the-art on this
+dataset.
+3.2
+
+miniImageNet Few-shot Classification
+
+The miniImageNet dataset, originally proposed by Vinyals et al. [29], is derived from the larger
+ILSVRC-12 dataset [26]. The splits used by Vinyals et al. [29] consist of 60,000 color images of size
+84 × 84 divided into 100 classes with 600 examples each. For our experiments, we use the splits
+introduced by Ravi and Larochelle [22] in order to directly compare with state-of-the-art algorithms
+for few-shot learning. Their splits use a different set of 100 classes, divided into 64 training, 16
+validation, and 20 test classes. We follow their procedure by training on the 64 training classes and
+using the 16 validation classes for monitoring generalization performance only.
+We use the same four-block embedding architecture as in our Omniglot experiments, though here
+it results in a 1600-dimensional output space due to the increased size of the images. We also
+5
+
+

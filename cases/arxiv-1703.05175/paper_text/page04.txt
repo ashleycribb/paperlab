@@ -1,0 +1,75 @@
+2.4
+
+Reinterpretation as a Linear Model
+
+A simple analysis is useful in gaining insight into the nature of the learned classifier. When we use
+Euclidean distance d(z, z0 ) = kz − z0 k2 , then the model in Equation (2) is equivalent to a linear
+model with a particular parameterization [19]. To see this, expand the term in the exponent:
+>
+−kfφ (x) − ck k2 = −fφ (x)> fφ (x) + 2c>
+k fφ (x) − ck ck
+
+(7)
+
+The first term in Equation (7) is constant with respect to the class k, so it does not affect the softmax
+probabilities. We can write the remaining terms as a linear model as follows:
+>
+>
+>
+2c>
+k fφ (x) − ck ck = wk fφ (x) + bk , where wk = 2ck and bk = −ck ck
+
+(8)
+
+We focus primarily on squared Euclidean distance (corresponding to spherical Gaussian densities) in
+this work. Our results indicate that Euclidean distance is an effective choice despite the equivalence
+to a linear model. We hypothesize this is because all of the required non-linearity can be learned
+within the embedding function. Indeed, this is the approach that modern neural network classification
+systems currently use, e.g., [14, 28].
+2.5
+
+Comparison to Matching Networks
+
+Prototypical networks differ from matching networks in the few-shot case with equivalence in the
+one-shot scenario. Matching networks [29] produce a weighted nearest neighbor classifier given the
+support set, while prototypical networks produce a linear classifier when squared Euclidean distance
+is used. In the case of one-shot learning, ck = xk since there is only one support point per class, and
+matching networks and prototypical networks become equivalent.
+A natural question is whether it makes sense to use multiple prototypes per class instead of just one.
+If the number of prototypes per class is fixed and greater than 1, then this would require a partitioning
+scheme to further cluster the support points within a class. This has been proposed in Mensink
+et al. [19] and Rippel et al. [25]; however both methods require a separate partitioning phase that is
+decoupled from the weight updates, while our approach is simple to learn with ordinary gradient
+descent methods.
+Vinyals et al. [29] propose a number of extensions, including decoupling the embedding functions of
+the support and query points, and using a second-level, fully-conditional embedding (FCE) that takes
+into account specific points in each episode. These could likewise be incorporated into prototypical
+networks, however they increase the number of learnable parameters, and FCE imposes an arbitrary
+ordering on the support set using a bi-directional LSTM. Instead, we show that it is possible to
+achieve the same level of performance using simple design choices, which we outline next.
+2.6
+
+Design Choices
+
+Distance metric Vinyals et al. [29] and Ravi and Larochelle [22] apply matching networks using
+cosine distance. However for both prototypical and matching networks any distance is permissible,
+and we found that using squared Euclidean distance can greatly improve results for both. We
+conjecture this is primarily due to cosine distance not being a Bregman divergence, and thus the
+equivalence to mixture density estimation discussed in Section 2.3 does not hold.
+Episode composition A straightforward way to construct episodes, used in Vinyals et al. [29] and
+Ravi and Larochelle [22], is to choose Nc classes and NS support points per class in order to match
+the expected situation at test-time. That is, if we expect at test-time to perform 5-way classification
+and 1-shot learning, then training episodes could be comprised of Nc = 5, NS = 1. We have found,
+however, that it can be extremely beneficial to train with a higher Nc , or “way”, than will be used
+at test-time. In our experiments, we tune the training Nc on a held-out validation set. Another
+consideration is whether to match NS , or “shot”, at train and test-time. For prototypical networks,
+we found that it is usually best to train and test with the same “shot” number.
+2.7
+
+Zero-Shot Learning
+
+Zero-shot learning differs from few-shot learning in that instead of being given a support set of
+training points, we are given a class meta-data vector vk for each class. These could be determined
+4
+
+

@@ -1,0 +1,140 @@
+{
+  "checks": [
+    {
+      "kind": "url",
+      "item": "arXiv abstract page for 1703.05175",
+      "check": "resolves with HTTP 200",
+      "url": "https://arxiv.org/abs/1703.05175"
+    },
+    {
+      "kind": "url",
+      "item": "arXiv PDF (v2, 13 pages)",
+      "check": "resolves with HTTP 200",
+      "url": "https://arxiv.org/pdf/1703.05175"
+    },
+    {
+      "kind": "url",
+      "item": "Official code repository",
+      "check": "resolves with HTTP 200 (MIT)",
+      "url": "https://github.com/jakesnell/prototypical-networks"
+    },
+    {
+      "kind": "url",
+      "item": "Omniglot dataset repository",
+      "check": "resolves with HTTP 200 (MIT)",
+      "url": "https://github.com/brendenlake/omniglot"
+    },
+    {
+      "kind": "url",
+      "item": "Omniglot images_background.zip",
+      "check": "resolves with HTTP 200",
+      "url": "https://github.com/brendenlake/omniglot/raw/master/python/images_background.zip"
+    },
+    {
+      "kind": "url",
+      "item": "Omniglot images_evaluation.zip",
+      "check": "resolves with HTTP 200",
+      "url": "https://github.com/brendenlake/omniglot/raw/master/python/images_evaluation.zip"
+    },
+    {
+      "kind": "url",
+      "item": "torchnet dependency (pytorch/tnt)",
+      "check": "resolves with HTTP 200",
+      "url": "https://github.com/pytorch/tnt"
+    },
+    {
+      "kind": "url",
+      "item": "PyTorch 0.4.0 CPU wheel (cp36, linux_x86_64)",
+      "check": "resolves with HTTP 200",
+      "url": "https://download.pytorch.org/whl/cpu/torch-0.4.0-cp36-cp36m-linux_x86_64.whl"
+    },
+    {
+      "kind": "pypi",
+      "item": "PyTorch 0.4.0 on PyPI",
+      "check": "version exists on PyPI (expected: fail \u2014 removed)",
+      "package": "torch",
+      "version": "0.4.0"
+    },
+    {
+      "kind": "pypi",
+      "item": "numpy 1.14.5 on PyPI",
+      "check": "version exists on PyPI",
+      "package": "numpy",
+      "version": "1.14.5"
+    },
+    {
+      "kind": "pypi",
+      "item": "tqdm latest on PyPI",
+      "check": "package exists on PyPI",
+      "package": "tqdm"
+    },
+    {
+      "kind": "quote_on_page",
+      "item": "LR schedule quote",
+      "check": "quote appears on page 5",
+      "page": 5,
+      "needle": "cut the learning rate in half every 2000 episodes"
+    },
+    {
+      "kind": "quote_on_page",
+      "item": "episode composition quote",
+      "check": "quote appears on page 5",
+      "page": 5,
+      "needle": "training episodes containing 60 classes and 5 query points per class"
+    },
+    {
+      "kind": "quote_on_page",
+      "item": "image size quote",
+      "check": "quote appears on page 5",
+      "page": 5,
+      "needle": "resizing the grayscale images to 28"
+    },
+    {
+      "kind": "quote_on_page",
+      "item": "evaluation protocol quote",
+      "check": "quote appears on page 5",
+      "page": 5,
+      "needle": "averaged over 1000 randomly generated episodes"
+    },
+    {
+      "kind": "quote_on_page",
+      "item": "miniImageNet eval quote (Table 2 caption)",
+      "check": "quote appears on page 6",
+      "page": 6,
+      "needle": "averaged over 600 test episodes"
+    },
+    {
+      "kind": "value_on_page",
+      "item": "Omniglot 5-way 1-shot 98.8% (Table 1)",
+      "check": "value appears on page 5",
+      "page": 5,
+      "value": "98.8%"
+    },
+    {
+      "kind": "value_on_page",
+      "item": "miniImageNet 5-way 1-shot 49.42 \u00b1 0.78% (Table 2)",
+      "check": "value appears on page 6",
+      "page": 6,
+      "value": "49.42 \u00b1 0.78%"
+    },
+    {
+      "kind": "absent_from_pdf",
+      "item": "Hardware requirements stated in paper",
+      "check": "no GPU/CPU/hardware mentions in setup text (expected: pass = not stated)",
+      "needles": [
+        "GPU",
+        "TITAN",
+        "K80",
+        "CPU"
+      ]
+    },
+    {
+      "kind": "absent_from_pdf",
+      "item": "Random seed stated in paper",
+      "check": "no seed mention (expected: pass = not stated)",
+      "needles": [
+        "seed"
+      ]
+    }
+  ]
+}

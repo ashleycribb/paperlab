@@ -1,0 +1,48 @@
+Acknowledgements
+We would like to thank Marc Law, Sachin Ravi, Hugo Larochelle, Renjie Liao, and Oriol Vinyals
+for helpful discussions. This work was supported by the Samsung GRP project and the Canadian
+Institute for Advanced Research.
+
+References
+[1] Zeynep Akata, Florent Perronnin, Zaid Harchaoui, and Cordelia Schmid. Label-embedding for attributebased classification. In Computer Vision and Pattern Recognition, pages 819–826, 2013.
+[2] Zeynep Akata, Scott Reed, Daniel Walter, Honglak Lee, and Bernt Schiele. Evaluation of output embeddings for fine-grained image classification. In Computer Vision and Pattern Recognition, pages 2927–2936,
+2015.
+[3] Jimmy Ba, Kevin Swersky, Sanja Fidler, and Ruslan Salakhutdinov. Predicting deep zero-shot convolutional
+neural networks using textual descriptions. In International Conference on Computer Vision, pages 4247–
+4255, 2015.
+[4] Arindam Banerjee, Srujana Merugu, Inderjit S Dhillon, and Joydeep Ghosh. Clustering with bregman
+divergences. Journal of machine learning research, 6(Oct):1705–1749, 2005.
+[5] Aurélien Bellet, Amaury Habrard, and Marc Sebban. A survey on metric learning for feature vectors and
+structured data. arXiv preprint arXiv:1306.6709, 2013.
+[6] Harrison Edwards and Amos Storkey. Towards a neural statistician. International Conference on Learning
+Representations, 2017.
+[7] Mohamed Elhoseiny, Babak Saleh, and Ahmed Elgammal. Write a classifier: Zero-shot learning using
+purely textual descriptions. In International Conference on Computer Vision, pages 2584–2591, 2013.
+[8] Jacob Goldberger, Geoffrey E. Hinton, Sam T. Roweis, and Ruslan Salakhutdinov. Neighbourhood
+components analysis. In Advances in Neural Information Processing Systems, pages 513–520, 2004.
+[9] Sepp Hochreiter and Jürgen Schmidhuber. Long short-term memory. Neural Computation, 9(8):1735–1780,
+1997.
+[10] Sergey Ioffe and Christian Szegedy. Batch normalization: Accelerating deep network training by reducing
+internal covariate shift. arXiv preprint arXiv:1502.03167, 2015.
+[11] Diederik Kingma and Jimmy Ba. Adam: A method for stochastic optimization. arXiv preprint
+arXiv:1412.6980, 2014.
+[12] Diederik P. Kingma and Max Welling. Auto-encoding variational bayes. arXiv preprint arXiv:1312.6114,
+2013.
+[13] Gregory Koch. Siamese neural networks for one-shot image recognition. Master’s thesis, University of
+Toronto, 2015.
+[14] Alex Krizhevsky, Ilya Sutskever, and Geoffrey E Hinton. Imagenet classification with deep convolutional
+neural networks. In Advances in Neural Information Processing Systems, pages 1097–1105, 2012.
+[15] Brian Kulis. Metric learning: A survey. Foundations and Trends in Machine Learning, 5(4):287–364,
+2012.
+[16] Brenden M. Lake, Ruslan Salakhutdinov, Jason Gross, and Joshua B. Tenenbaum. One shot learning of
+simple visual concepts. In CogSci, 2011.
+[17] Renjie Liao, Alexander Schwing, Richard Zemel, and Raquel Urtasun. Learning deep parsimonious
+representations. Advances in Neural Information Processing Systems, 2016.
+[18] Laurens van der Maaten and Geoffrey Hinton. Visualizing data using t-sne. Journal of Machine Learning
+Research, 9(Nov):2579–2605, 2008.
+[19] Thomas Mensink, Jakob Verbeek, Florent Perronnin, and Gabriela Csurka. Distance-based image classification: Generalizing to new classes at near-zero cost. IEEE Transactions on Pattern Analysis and Machine
+Intelligence, 35(11):2624–2637, 2013.
+
+9
+
+

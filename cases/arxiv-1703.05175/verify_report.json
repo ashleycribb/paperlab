@@ -1,0 +1,14 @@
+{
+  "presence": {
+    "level": "presence",
+    "total": 79,
+    "passed": 79,
+    "fails": []
+  },
+  "pairing": {
+    "level": "pairing",
+    "total": 79,
+    "passed": 79,
+    "fails": []
+  }
+}

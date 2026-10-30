@@ -1,0 +1,30 @@
+[20] Erik G Miller, Nicholas E Matsakis, and Paul A Viola. Learning from one example through shared densities
+on transforms. In CVPR, volume 1, pages 464–471, 2000.
+[21] Renqiang Min, David A Stanley, Zineng Yuan, Anthony Bonner, and Zhaolei Zhang. A deep non-linear
+feature mapping for large-margin knn classification. In IEEE International Conference on Data Mining,
+pages 357–366, 2009.
+[22] Sachin Ravi and Hugo Larochelle. Optimization as a model for few-shot learning. International Conference
+on Learning Representations, 2017.
+[23] Scott Reed, Zeynep Akata, Bernt Schiele, and Honglak Lee. Learning deep representations of fine-grained
+visual descriptions. arXiv preprint arXiv:1605.05395, 2016.
+[24] Danilo Jimenez Rezende, Shakir Mohamed, and Daan Wierstra. Stochastic backpropagation and approximate inference in deep generative models. arXiv preprint arXiv:1401.4082, 2014.
+[25] Oren Rippel, Manohar Paluri, Piotr Dollar, and Lubomir Bourdev. Metric learning with adaptive density
+discrimination. International Conference on Learning Representations, 2016.
+[26] Olga Russakovsky, Jia Deng, Hao Su, Jonathan Krause, Sanjeev Satheesh, Sean Ma, Zhiheng Huang,
+Andrej Karpathy, Aditya Khosla, Michael Bernstein, Alexander C. Berg, and Li Fei-Fei. Imagenet large
+scale visual recognition challenge. International Journal of Computer Vision, 115(3):211–252, 2015.
+[27] Ruslan Salakhutdinov and Geoffrey E. Hinton. Learning a nonlinear embedding by preserving class
+neighbourhood structure. In AISTATS, pages 412–419, 2007.
+[28] Christian Szegedy, Wei Liu, Yangqing Jia, Pierre Sermanet, Scott Reed, Dragomir Anguelov, Dumitru
+Erhan, Vincent Vanhoucke, and Andrew Rabinovich. Going deeper with convolutions. In Proceedings of
+the IEEE Conference on Computer Vision and Pattern Recognition, pages 1–9, 2015.
+[29] Oriol Vinyals, Charles Blundell, Tim Lillicrap, Daan Wierstra, et al. Matching networks for one shot
+learning. In Advances in Neural Information Processing Systems, pages 3630–3638, 2016.
+[30] Kilian Q Weinberger, John Blitzer, and Lawrence K Saul. Distance metric learning for large margin nearest
+neighbor classification. In Advances in Neural Information Processing Systems, pages 1473–1480, 2005.
+[31] P. Welinder, S. Branson, T. Mita, C. Wah, F. Schroff, S. Belongie, and P. Perona. Caltech-UCSD Birds 200.
+Technical Report CNS-TR-2010-001, California Institute of Technology, 2010.
+
+10
+
+

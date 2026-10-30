@@ -1,0 +1,63 @@
+Figure 3: A t-SNE visualization of the embeddings learned by prototypical networks on the Omniglot
+dataset. A subset of the Tengwar script is shown (an alphabet in the test set). Class prototypes are
+indicated in black. Several misclassified characters are highlighted in red along with arrows pointing
+to the correct prototype.
+
+1-shot
+5-shot Accuracy (5-way)
+
+1-shot Accuracy (5-way)
+
+51%
+50%
+49%
+48%
+47%
+46%
+45%
+5
+
+10
+
+15
+
+20
+
+25
+
+Training Classes per Episode
+
+30
+
+5-shot
+
+69.0%
+68.5%
+68.0%
+67.5%
+67.0%
+66.5%
+66.0%
+65.5%
+65.0%
+5
+
+10
+
+15
+
+20
+
+25
+
+Training Classes per Episode
+
+30
+
+Figure 4: Comparison of the effect of training “way” (number of classes per episode) for prototypical
+networks trained on miniImageNet. Each training episode contains 15 query points per class. Error
+bars indicate 95% confidence intervals as computed over 600 test episodes.
+
+12
+
+

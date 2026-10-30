@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "paperlab"
+version = "0.1.0"
+description = "A virtual lab for reproducing research papers: environment records, run guides, expected results, existence checks — with verdicts reserved for humans."
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.9"
+dependencies = [
+    "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+signing = ["cryptography>=42.0"]
+dev = ["pytest>=8.0", "pytest-cov"]
+
+[project.scripts]
+paperlab = "paperlab.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["paperlab*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

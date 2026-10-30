@@ -1,0 +1,126 @@
+A
+
+Additional Omniglot Results
+
+In Table 4 we show test classification accuracy for prototypical networks using Euclidean distance
+trained with 5, 20, and 60 classes per episode.
+Table 4: Additional classification accuracy results for prototypical networks on Omniglot. Configuration of training episodes is indicated by number of classes per episode (“way”), number of support
+points per class (“shot”) and number of query points per class (“query”). Classification accuracy was
+averaged over 1,000 randomly generated episodes from the test set.
+Train Episodes
+
+5-way Acc.
+
+20-way Acc.
+
+Model
+
+Dist.
+
+Shot
+
+Query
+
+Way
+
+1-shot
+
+5-shot
+
+1-shot
+
+5-shot
+
+P ROTONETS
+P ROTONETS
+P ROTONETS
+
+Euclid.
+Euclid.
+Euclid.
+
+1
+1
+1
+
+15
+15
+5
+
+5
+20
+60
+
+97.4%
+98.7%
+98.8%
+
+99.3%
+99.6%
+99.7%
+
+92.0%
+95.4%
+96.0%
+
+97.8%
+98.8%
+99.0%
+
+P ROTONETS
+P ROTONETS
+P ROTONETS
+
+Euclid.
+Euclid.
+Euclid.
+
+5
+5
+5
+
+15
+15
+5
+
+5
+20
+60
+
+96.9%
+98.1%
+98.5%
+
+99.3%
+99.6%
+99.7%
+
+90.7%
+94.1%
+94.7%
+
+97.8%
+98.7%
+98.9%
+
+Figure 3 shows a sample t-SNE visualization [18] of the embeddings learned by prototypical networks.
+We visualize a subset of test characters from the same alphabet in order to gain better insight, despite
+the fact that classes in actual test episodes are likely to come from different alphabets. Even though the
+visualized characters are minor variations of each other, the network is able to cluster the hand-drawn
+characters closely around the class prototypes.
+
+B
+
+Additional miniImageNet Results
+
+In Table 5 we show the full results for the comparison of training episode configuration in Figure 2 of
+the main paper.
+We also compared Euclidean-distance prototypical networks trained with a different number of
+classes per episode. Here we vary the classes per training episode from 5 up to 30 while keeping the
+number of query points per class fixed at 15. The results are shown in Figure 4. Our findings indicate
+that construction of training episodes is an important consideration in order to achieve good results
+for few-shot classification. Table 6 contains the full results for this set of experiments.
+
+11
+
+

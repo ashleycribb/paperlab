@@ -1,0 +1,135 @@
+Table 2: Few-shot classification accuracies on miniImageNet. All accuracy results are averaged over
+600 test episodes and are reported with 95% confidence intervals. ∗ Results reported by [22].
+5-way Acc.
+Model
+
+Dist.
+
+Fine Tune
+
+1-shot
+
+5-shot
+
+BASELINE N EAREST NEIGHBORS∗
+M ATCHING N ETWORKS [29]∗
+M ATCHING N ETWORKS FCE [29]∗
+M ETA -L EARNER LSTM [22]∗
+P ROTOTYPICAL N ETWORKS (O URS )
+
+Cosine
+Cosine
+Cosine
+Euclid.
+
+N
+N
+N
+N
+N
+
+28.86 ± 0.54%
+43.40 ± 0.78%
+43.56 ± 0.84%
+43.44 ± 0.77%
+49.42 ± 0.78%
+
+49.79 ± 0.79%
+51.09 ± 0.71%
+55.31 ± 0.73%
+60.60 ± 0.71%
+68.20 ± 0.66%
+
+70%
+
+80%
+
+Matching / Proto. Nets
+
+5-shot Accuracy (5-way)
+
+1-shot Accuracy (5-way)
+
+80%
+
+60%
+50%
+40%
+30%
+20%
+
+70%
+
+Matching Nets
+Proto. Nets
+
+60%
+50%
+40%
+30%
+20%
+
+5-way
+Cosine
+
+5-way
+Euclid.
+
+20-way
+Cosine
+
+1-shot
+
+5-way
+Cosine
+
+20-way
+Euclid.
+
+5-way
+Euclid.
+
+20-way
+Cosine
+
+5-shot
+
+20-way
+Euclid.
+
+Figure 2: Comparison showing the effect of distance metric and number of classes per training episode
+on 5-way classification accuracy for both matching and prototypical networks on miniImageNet.
+The x-axis indicates configuration of the training episodes (way, distance, and shot), and the y-axis
+indicates 5-way test accuracy for the corresponding shot. Error bars indicate 95% confidence intervals
+as computed over 600 test episodes. Note that matching networks and prototypical networks are
+identical in the 1-shot case.
+use the same learning rate schedule as in our Omniglot experiments and train until validation loss
+stops improving. We train using 30-way episodes for 1-shot classification and 20-way episodes for
+5-shot classification. We match train shot to test shot and each class contains 15 query points per
+episode. We compare to the baselines as reported by Ravi and Larochelle [22], which include a
+simple nearest neighbor approach on top of features learned by a classification network on the 64
+training classes. The other baselines are two non-fine-tuned variants of matching networks (both
+ordinary and FCE) and the Meta-Learner LSTM. As can be seen in Table 2, prototypical networks
+achieves state-of-the-art here by a wide margin.
+We conducted further analysis, to determine the effect of distance metric and the number of training
+classes per episode on the performance of prototypical networks and matching networks. To make
+the methods comparable, we use our own implementation of matching networks that utilizes the
+same embedding architecture as our prototypical networks. In Figure 2 we compare cosine vs.
+Euclidean distance and 5-way vs. 20-way training episodes in the 1-shot and 5-shot scenarios, with
+15 query points per class per episode. We note that 20-way achieves higher accuracy than 5-way
+and conjecture that the increased difficulty of 20-way classification helps the network to generalize
+better, because it forces the model to make more fine-grained decisions in the embedding space. Also,
+using Euclidean distance improves performance substantially over cosine distance. This effect is even
+more pronounced for prototypical networks, in which computing the class prototype as the mean of
+embedded support points is more naturally suited to Euclidean distances since cosine distance is not
+a Bregman divergence.
+3.3
+
+CUB Zero-shot Classification
+
+In order to assess the suitability of our approach for zero-shot learning, we also run experiments on
+the Caltech-UCSD Birds (CUB) 200-2011 dataset [31]. The CUB dataset contains 11,788 images of
+200 bird species. We closely follow the procedure of Reed et al. [23] in preparing the data. We use
+6
+
+

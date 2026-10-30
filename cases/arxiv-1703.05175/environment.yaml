@@ -1,0 +1,252 @@
+# PaperLab environment record
+# Paper: Prototypical Networks for Few-shot Learning (Snell, Swersky, Zemel)
+# arXiv:1703.05175v2 [cs.LG], 19 Jun 2017 (open access, arXiv non-exclusive distribution license)
+# PDF: https://arxiv.org/pdf/1703.05175
+# Official code: https://github.com/jakesnell/prototypical-networks (MIT)
+#
+# PROVENANCE RULES (PaperLab hard rules):
+#   stated_in_paper : quoted directly from the paper, with page number (page numbers refer to
+#                    the arXiv v2 PDF, 13 pages total)
+#   stated_in_repo : stated by the official code repository (evidence URL given); the PAPER
+#                    does not state it, so it needs human confirmation
+#   inferred       : reasoned by the AI, with the reason given; needs human confirmation
+#   not_stated     : searched for and absent from both paper and repo; needs human decision
+#
+# The AI only verifies that things exist. Humans make all judgments about
+# reproduction, correctness, and validity.
+
+paper:
+  id: "arXiv:1703.05175v2"
+  title: "Prototypical Networks for Few-shot Learning"
+  authors: ["Jake Snell", "Kevin Swersky", "Richard S. Zemel"]
+  venue: "NeurIPS 2017"
+  url: https://arxiv.org/abs/1703.05175
+  pdf_url: https://arxiv.org/pdf/1703.05175
+  license: "arXiv non-exclusive distribution license (https://arxiv.org/licenses/nonexclusive-distrib/1.0/)"
+  official_code: https://github.com/jakesnell/prototypical-networks
+  official_code_license: "MIT (https://github.com/jakesnell/prototypical-networks/blob/master/LICENSE)"
+
+# ---------------------------------------------------------------------------
+# SOFTWARE
+# All software items are NOT stated in the paper. Provenance is the official
+# repo (README, setup.py, imports). Every item needs human confirmation.
+# ---------------------------------------------------------------------------
+software:
+  - name: python
+    version: "3.6"
+    provenance: stated_in_repo
+    evidence: "Repo README: 'This code has been tested on Ubuntu 16.04 with Python 3.6 and PyTorch 0.4.'"
+    evidence_url: https://github.com/jakesnell/prototypical-networks#install-dependencies
+    note: "Python 3.6 reached end of life 2021-12-23; see risks in paperlab_design.md."
+
+  - name: torch (PyTorch)
+    version: "0.4"
+    provenance: stated_in_repo
+    evidence: "Repo README: 'tested on Ubuntu 16.04 with Python 3.6 and PyTorch 0.4.'"
+    evidence_url: https://github.com/jakesnell/prototypical-networks#install-dependencies
+    note: >
+      PyTorch 0.4.0 is NOT on PyPI (PyPI 'torch' starts at 1.0.0). The official
+      CPU wheel for Python 3.6 resolves at
+      https://download.pytorch.org/whl/cpu/torch-0.4.0-cp36-cp36m-linux_x86_64.whl
+      GPU wheels target CUDA 8/9-era drivers and likely will not run on modern
+      hardware. HUMAN DECISION: run CPU-only on 0.4.0, or adapt code to modern
+      PyTorch (an inference about acceptability the AI cannot make).
+
+  - name: torchvision
+    version: "not stated (paired with PyTorch 0.4)"
+    provenance: stated_in_repo
+    evidence: "Repo README: 'Install PyTorch and torchvision.' Import in scripts/train/few_shot/train.py line 11."
+    evidence_url: https://github.com/jakesnell/prototypical-networks/blob/master/scripts/train/few_shot/train.py
+    note: "Repo does not pin a torchvision version; pair with the PyTorch 0.4-era release."
+
+  - name: torchnet
+    version: "master branch at install time (not pinned)"
+    provenance: stated_in_repo
+    evidence: "Repo README: 'Install torchnet by running pip install git+https://github.com/pytorch/tnt.git@master'. Import in scripts/train/few_shot/train.py line 12."
+    evidence_url: https://github.com/pytorch/tnt
+    note: >
+      pytorch/tnt license is reported by the GitHub API as NOASSERTION (not a
+      standard SPDX license). Legal review needed before redistribution;
+      using it to run an experiment locally is a human call.
+
+  - name: tqdm
+    version: "not pinned"
+    provenance: stated_in_repo
+    evidence: "setup.py install_requires: ['torch', 'tqdm']."
+    evidence_url: https://github.com/jakesnell/prototypical-networks/blob/master/setup.py
+
+  - name: numpy
+    version: "not pinned"
+    provenance: stated_in_repo
+    evidence: "Import in scripts/train/few_shot/train.py line 6 ('import numpy as np')."
+    evidence_url: https://github.com/jakesnell/prototypical-networks/blob/master/scripts/train/few_shot/train.py
+    note: "The paper does not state any software dependency. A 2017-era compatible numpy (e.g. 1.14.x) is a reasonable inference, not a fact."
+
+# ---------------------------------------------------------------------------
+# DATASETS
+# ---------------------------------------------------------------------------
+datasets:
+  - name: Omniglot
+    provenance: stated_in_paper
+    page: 5
+    section: "3.1 Omniglot Few-shot Classification"
+    paper_quote: "Omniglot [16] is a dataset of 1623 handwritten characters collected from 50 alphabets. There are 20 examples associated with each character, where each example is drawn by a different human subject."
+    distribution: "images_background.zip + images_evaluation.zip from brendenlake/omniglot (used by repo download_omniglot.sh)"
+    urls:
+      - https://github.com/brendenlake/omniglot
+      - https://github.com/brendenlake/omniglot/raw/master/python/images_background.zip
+      - https://github.com/brendenlake/omniglot/raw/master/python/images_evaluation.zip
+    license: "MIT (https://github.com/brendenlake/omniglot/blob/master/LICENSE)"
+    license_check: "GitHub API reports spdx_id=MIT for brendenlake/omniglot; all three URLs return HTTP 200."
+    scope: "IN scope for the prototype run guide."
+
+  - name: miniImageNet
+    provenance: stated_in_paper
+    page: 5
+    section: "3.2 miniImageNet Few-shot Classification"
+    paper_quote: "The miniImageNet dataset, originally proposed by Vinyals et al. [29], is derived from the larger ILSVRC-12 dataset [26]. The splits used by Vinyals et al. [29] consist of 60,000 color images of size 84 x 84 divided into 100 classes with 600 examples each."
+    distribution: "Repo ships only the class-split CSVs (data/miniImagenet/splits/ravi/); the IMAGES themselves are not distributed by the official repo."
+    urls:
+      - https://github.com/jakesnell/prototypical-networks/tree/master/data/miniImagenet/splits/ravi
+    license: "Derived from ILSVRC-2012 (ImageNet), which is research-only, non-commercial, and requires accepting ImageNet terms; not MIT. Third-party mirrors exist but are NOT officially sanctioned."
+    license_check: "Repo data/miniImagenet directory contains only 'splits' (verified via GitHub API tree listing)."
+    scope: "OUT of prototype scope (image acquisition path + license need a human owner). Reported numbers still extracted in expected_results.json."
+
+# ---------------------------------------------------------------------------
+# HARDWARE
+# The paper does not state hardware. All hardware items are repo-stated or not stated.
+# ---------------------------------------------------------------------------
+hardware:
+  - item: operating system
+    value: "Ubuntu 16.04"
+    provenance: stated_in_repo
+    evidence: "Repo README: 'This code has been tested on Ubuntu 16.04 with Python 3.6 and PyTorch 0.4.'"
+    evidence_url: https://github.com/jakesnell/prototypical-networks#install-dependencies
+
+  - item: GPU
+    value: "optional"
+    provenance: stated_in_repo
+    evidence: "Repo README: 'If you are running on a GPU you can pass in the option --data.cuda.'"
+    evidence_url: https://github.com/jakesnell/prototypical-networks#train-the-model
+    note: "Omniglot-scale training is feasible on CPU; the paper itself is silent on hardware."
+
+  - item: CPU / RAM / disk
+    value: "not stated"
+    provenance: not_stated
+    evidence: "Searched all 13 PDF pages for GPU/CPU/memory/TITAN/K80 mentions: none found in the experimental setup text."
+    evidence_url: https://arxiv.org/pdf/1703.05175
+
+# ---------------------------------------------------------------------------
+# SETTINGS AND HYPERPARAMETERS (Omniglot experiment, Section 3.1)
+# ---------------------------------------------------------------------------
+settings:
+  - name: distance_metric
+    value: "squared Euclidean"
+    provenance: stated_in_paper
+    page: 5
+    quote: "We trained prototypical networks using Euclidean distance in the 1-shot and 5-shot scenarios with training episodes containing 60 classes and 5 query points per class."
+
+  - name: image_size
+    value: "28 x 28 grayscale"
+    provenance: stated_in_paper
+    page: 5
+    quote: "We follow the procedure of Vinyals et al. [29] by resizing the grayscale images to 28 x 28 and augmenting the character classes with rotations in multiples of 90 degrees."
+
+  - name: augmentation
+    value: "rotations in multiples of 90 degrees"
+    provenance: stated_in_paper
+    page: 5
+    quote: "...augmenting the character classes with rotations in multiples of 90 degrees."
+
+  - name: class_split
+    value: "1200 characters + rotations for training (4800 classes total); remaining classes incl. rotations for test"
+    provenance: stated_in_paper
+    page: 5
+    quote: "We use 1200 characters plus rotations for training (4,800 classes in total) and the remaining classes, including rotations, for test."
+
+  - name: embedding_architecture
+    value: "4 conv blocks: 64-filter 3x3 conv, batch norm, ReLU, 2x2 max-pool; 64-dim output on Omniglot"
+    provenance: stated_in_paper
+    page: 5
+    quote: "Our embedding architecture mirrors that used by Vinyals et al. [29] and is composed of four convolutional blocks. Each block comprises a 64-filter 3 x 3 convolution, batch normalization layer [10], a ReLU nonlinearity and a 2 x 2 max-pooling layer. When applied to the 28 x 28 Omniglot images this architecture results in a 64-dimensional output space."
+
+  - name: optimizer
+    value: "Adam"
+    provenance: stated_in_paper
+    page: 5
+    quote: "All of our models were trained via SGD with Adam [11]."
+
+  - name: initial_learning_rate
+    value: "1e-3"
+    provenance: stated_in_paper
+    page: 5
+    quote: "We used an initial learning rate of 10^-3 and cut the learning rate in half every 2000 episodes."
+
+  - name: lr_schedule
+    value: "halve every 2000 episodes"
+    provenance: stated_in_paper
+    page: 5
+    quote: "We used an initial learning rate of 10^-3 and cut the learning rate in half every 2000 episodes."
+    cross_check: "Repo default --train.decay_every 20 epochs x 100 episodes/epoch = 2000 episodes; consistent with the paper."
+
+  - name: regularization
+    value: "none other than batch normalization"
+    provenance: stated_in_paper
+    page: 5
+    quote: "No regularization was used other than batch normalization."
+
+  - name: training_episode_composition
+    value: "60 classes per episode, 5 query points per class"
+    provenance: stated_in_paper
+    page: 5
+    quote: "...training episodes containing 60 classes and 5 query points per class."
+
+  - name: shot_matching
+    value: "match training shot to test shot; use more classes (higher way) per training episode than test"
+    provenance: stated_in_paper
+    page: 5
+    quote: "We found that it is advantageous to match the training-shot with the test-shot, and to use more classes (higher \"way\") per training episode rather than fewer."
+
+  - name: evaluation_protocol
+    value: "accuracy averaged over 1000 randomly generated test episodes"
+    provenance: stated_in_paper
+    page: 5
+    quote: "We computed classification accuracy for our models averaged over 1000 randomly generated episodes from the test set."
+
+  - name: test_scenarios
+    value: "5-way and 20-way, 1-shot and 5-shot"
+    provenance: stated_in_paper
+    page: 5
+    quote: "We trained prototypical networks using Euclidean distance in the 1-shot and 5-shot scenarios..." (Table 1 reports 5-way/20-way x 1-shot/5-shot)
+
+  - name: total_training_episodes
+    value: "not stated"
+    provenance: not_stated
+    evidence: "Not in the paper. Repo default is --train.epochs 10000 with 100 episodes/epoch, early stopping via --train.patience 200. HUMAN must confirm the stopping budget."
+    evidence_url: https://github.com/jakesnell/prototypical-networks/blob/master/scripts/train/few_shot/run_train.py
+
+  - name: random_seed
+    value: "not stated"
+    provenance: not_stated
+    evidence: "No seed mentioned in the paper or repo run scripts. Exact-number reproduction is therefore not expected; comparison must be statistical (within reported confidence intervals where given)."
+
+# ---------------------------------------------------------------------------
+# miniImageNet-specific settings (stated in paper, p.6, Section 3.2)
+# Extracted for completeness; out of prototype run scope.
+# ---------------------------------------------------------------------------
+settings_miniimagenet:
+  - name: embedding_output_dim
+    value: 1600
+    provenance: stated_in_paper
+    page: 6
+    quote: "We use the same four-block embedding architecture as in our Omniglot experiments, though here it results in a 1600-dimensional output space due to the increased size of the images."
+  - name: training_episode_composition
+    value: "30-way for 1-shot, 20-way for 5-shot; train shot = test shot; 15 query points per class"
+    provenance: stated_in_paper
+    page: 6
+    quote: "We train using 30-way episodes for 1-shot classification and 20-way episodes for 5-shot classification. We match train shot to test shot and each class contains 15 query points per episode."
+  - name: evaluation_protocol
+    value: "accuracy averaged over 600 test episodes with 95% confidence intervals"
+    provenance: stated_in_paper
+    page: 6
+    quote: "All accuracy results are averaged over 600 test episodes and are reported with 95% confidence intervals." (Table 2 caption)
