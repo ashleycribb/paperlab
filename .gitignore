@@ -8,3 +8,5 @@ build/
 .venv/
 cases/*/paper.pdf
 run_record.json
+run.json
+run_logs/

@@ -84,6 +84,37 @@ def guard_output(text: str, source: str = "output") -> str:
     return text
 
 
+def _iter_strings(obj):
+    if isinstance(obj, str):
+        yield obj
+    elif isinstance(obj, dict):
+        for v in obj.values():
+            yield from _iter_strings(v)
+    elif isinstance(obj, (list, tuple)):
+        for v in obj:
+            yield from _iter_strings(v)
+
+
+def guard_object(obj, source: str = "output") -> object:
+    """Guard a structured object (dict/list) before serialization.
+
+    Scans every string value as prose. This avoids the JSON-quoting hole:
+    a verdict claim as the first words of a JSON string value is invisible
+    to a serialized-text scan (the string's opening quote reads as a
+    'quoted context'), but is caught here.
+    """
+    for s in _iter_strings(obj):
+        findings = scan_for_verdict_claims(s)
+        if findings:
+            raise VerdictClaimError(
+                f"{source} contains AI verdict claims (forbidden by PaperLab hard rules): "
+                + "; ".join(sorted(set(findings)))
+                + f" (in string: {s[:120]!r})"
+                + ". Verdicts belong only to the human-signed verdict field."
+            )
+    return obj
+
+
 # Provenance vocabulary for environment items and steps.
 PROVENANCE_STATED_IN_PAPER = "stated_in_paper"
 PROVENANCE_STATED_IN_REPO = "stated_in_repo"

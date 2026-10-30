@@ -13,6 +13,6 @@ Hard rules (enforced in paperlab.rules):
 
 __version__ = "0.1.0"
 
-from . import checks, compare, records, rules, verify  # noqa: F401
+from . import capture, checks, compare, records, rules, verify  # noqa: F401
 
-__all__ = ["checks", "compare", "records", "rules", "verify", "__version__"]
+__all__ = ["capture", "checks", "compare", "records", "rules", "verify", "__version__"]

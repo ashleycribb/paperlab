@@ -11,7 +11,7 @@ import re
 import urllib.request
 from datetime import datetime, timezone
 
-from .rules import guard_output
+from .rules import guard_object
 
 USER_AGENT = "PaperLab/0.1 (research existence checks)"
 VALUE_RX = re.compile(r"\d+\.\d+\s*±\s*\d+\.\d+%|\d+\.\d+%")
@@ -149,5 +149,5 @@ def run_checklist(case_dir, checklist: dict, pdf_path=None) -> dict:
 
 def write_report_guarded(path, report) -> None:
     """Write a report only if it contains no AI verdict claims."""
-    guard_output(json.dumps(report, indent=2), source=str(path))
+    guard_object(report, source=str(path))
     path.write_text(json.dumps(report, indent=2))

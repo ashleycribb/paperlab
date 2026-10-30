@@ -41,3 +41,20 @@ def test_tolerates_negation_context():
             "Those judgments belong to humans.")
     assert scan_for_verdict_claims(text) == []
     guard_output(text)  # does not raise
+
+
+def test_guard_object_catches_json_string_hole():
+    # Regression: a verdict claim as the first words of a JSON string value
+    # is invisible to a serialized-text scan (the opening quote reads as
+    # quoted context) but must be caught by the object-level guard.
+    from paperlab.rules import guard_object
+    obj = {"results": [{"metric": "m", "value": "1%"}],
+           "note": "The experiment reproduces the paper."}
+    with pytest.raises(VerdictClaimError):
+        guard_object(obj)
+
+
+def test_guard_object_passes_clean_nested():
+    from paperlab.rules import guard_object
+    obj = {"a": ["clean", {"b": "also clean"}], "c": 1}
+    guard_object(obj)  # does not raise

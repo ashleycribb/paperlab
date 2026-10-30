@@ -16,8 +16,8 @@ import sys
 import urllib.request
 from pathlib import Path
 
-from . import checks, compare, records, verify
-from .rules import guard_output, VerdictClaimError
+from . import capture, checks, compare, records, verify
+from .rules import guard_object, guard_output, VerdictClaimError
 
 CASE_TEMPLATE = {
     "case.json": {
@@ -127,7 +127,7 @@ def cmd_diff(args):
         environment_used=run.get("environment_actually_used"),
     )
     # Guard the emitted record against verdict claims before writing.
-    guard_output(json.dumps(skeleton, indent=2), source="run record")
+    guard_object(skeleton, source="run record")
     out = Path(args.out) if args.out else case_dir / "run_record.json"
     out.write_text(json.dumps(skeleton, indent=2))
     rows = skeleton["comparison"]["rows"]
@@ -139,6 +139,32 @@ def cmd_diff(args):
         print(f"  {row['metric']}: paper={row['paper']} measured={row['measured']} "
               f"delta={row.get('delta_pp')}{flag}")
     print("verdict: UNSET — professor fills human_verdict and signs")
+
+
+def cmd_capture(args):
+    """Run the student's commands under the capture harness."""
+    flat = list(args.command)
+    if not flat:
+        sys.exit("no command given; usage: paperlab capture CASE -- CMD [ARGS...]")
+    run = capture.capture_run(
+        Path(args.case_dir), [flat],
+        cwd=Path(args.cwd) if args.cwd else None,
+        results=json.loads(Path(args.results_file).read_text())
+        if args.results_file else None,
+        hash_dirs=[Path(d) for d in (args.hash_dir or [])],
+        stop_on_failure=not args.no_stop,
+    )
+    out = Path(args.out) if args.out else Path(args.case_dir) / "run.json"
+    capture.write_run_file(out, run)
+    ok = all(c["exit_code"] == 0 for c in run["what_was_run"]["commands"])
+    print(f"captured {len(run['what_was_run']['commands'])} command(s) "
+          f"(exit codes: {[c['exit_code'] for c in run['what_was_run']['commands']]})")
+    print(f"environment snapshot: {sum(1 for _ in run['environment_actually_used'])} fields; "
+          f"packages pinned: {len(run['environment_actually_used'].get('pip_freeze', []))}")
+    print(f"run file written to {out} (results: "
+          f"{len(run['results'])} entries; fill more or use --results-file)")
+    if not ok:
+        print("WARNING: a command failed; see run_logs/ and the record's note")
 
 
 def cmd_records(args):
@@ -159,6 +185,22 @@ def cmd_records(args):
 
 
 def main(argv=None):
+    if argv is None:
+        argv = sys.argv[1:]
+    # The capture command takes the student's command after '--'.
+    # argparse positionals cannot hold it (REMAINDER swallows following
+    # options), so we split argv ourselves before parsing.
+    capture_command = None
+    if argv and argv[0] == "capture":
+        rest = list(argv[1:])
+        if "--" not in rest:
+            sys.exit("usage: paperlab capture CASE [options] -- CMD [ARGS...]")
+        i = rest.index("--")
+        capture_command = rest[i + 1:]
+        if not capture_command:
+            sys.exit("no command given after '--'")
+        argv = ["capture"] + rest[:i]
+
     ap = argparse.ArgumentParser(prog="paperlab", description=__doc__)
     sub = ap.add_subparsers(dest="cmd", required=True)
 
@@ -187,11 +229,25 @@ def main(argv=None):
     p.add_argument("--out")
     p.set_defaults(fn=cmd_diff)
 
+    p = sub.add_parser("capture", help="run commands under the capture harness")
+    p.add_argument("case_dir")
+    p.add_argument("--results-file", help="JSON list of {metric, value} results to embed")
+    p.add_argument("--hash-dir", action="append", default=[],
+                   help="directory whose files are SHA-256 pinned (repeatable)")
+    p.add_argument("--cwd", help="working directory for the commands (default: current)")
+    p.add_argument("--out", help="output path (default: CASE_DIR/run.json)")
+    p.add_argument("--no-stop", action="store_true", help="continue after a failing command")
+    p.set_defaults(fn=cmd_capture)
+
     p = sub.add_parser("records", help="emit versioned record objects")
     p.add_argument("case_dir")
     p.set_defaults(fn=cmd_records)
 
     args = ap.parse_args(argv)
+
+    if capture_command is not None:
+        args.command = capture_command
+
     try:
         args.fn(args)
     except VerdictClaimError as e:
