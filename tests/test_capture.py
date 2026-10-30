@@ -115,3 +115,42 @@ def test_secrets_never_captured(tmp_path):
     blob = json.dumps(run)
     assert "PAPERLAB_TEST_SECRET" not in blob
     assert "supersecret123" not in blob
+
+
+def _walk_keys(obj):
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            yield k
+            yield from _walk_keys(v)
+    elif isinstance(obj, (list, tuple)):
+        for v in obj:
+            yield from _walk_keys(v)
+
+
+def test_capture_is_purely_descriptive(tmp_path):
+    # The harness records what was actually run. It must not judge the
+    # environment: no evaluative keys, no comparison against
+    # environment.yaml, no pass/fail of the environment itself.
+    run = capture_run(tmp_path, [[sys.executable, "-c", "print('x')"]], cwd=tmp_path)
+    judgment_keys = {
+        "correct", "incorrect", "expected", "unexpected", "matches",
+        "mismatch", "verdict", "judgment", "judgement", "evaluation",
+        "valid", "invalid", "approved", "rejected", "score", "pass",
+        "fail", "ok", "good", "bad", "assessment", "comparison",
+    }
+    bad = [k for k in _walk_keys(run) if k.lower() in judgment_keys]
+    assert bad == [], f"capture emitted judgment keys: {bad}"
+    # Exit codes and notes are observations, not environment verdicts.
+    assert run["what_was_run"]["commands"][0]["exit_code"] == 0
+
+
+def test_capture_ignores_environment_yaml(tmp_path):
+    # The harness must not read the case's environment.yaml (that would
+    # invite comparison); its input is only the command and the machine.
+    (tmp_path / "environment.yaml").write_text("software: [{name: torch}]\n")
+    before = (tmp_path / "environment.yaml").read_text()
+    run = capture_run(tmp_path, [[sys.executable, "-c", "print('y')"]], cwd=tmp_path)
+    assert (tmp_path / "environment.yaml").read_text() == before
+    blob = json.dumps(run)
+    assert "environment.yaml" not in blob
+    assert "torch" not in blob

@@ -12,6 +12,10 @@ Wraps the student's commands and produces the ``run.json`` that
   left empty for the student to fill
 
 Hard rules honored:
+- Records, never judges: the snapshot is purely descriptive. It never
+  compares the actual environment against environment.yaml, never marks
+  an environment correct/incorrect or expected/unexpected, and reads no
+  case files other than where to write. Evaluation is the professor's.
 - No secrets: environment variables are never captured, and log text is
   scanned and redacted for credential patterns before it is written.
 - No verdicts: the output is guarded by paperlab.rules.guard_output.

@@ -30,6 +30,16 @@ VERDICT_PHRASES = [
     r"the paper holds",
 ]
 
+# Verb-level claims: any "<subject> reproduces/reproduce" is a verdict claim
+# regardless of subject wording ("this run reproduces it", "our code
+# reproduces Table 1"). Past-tense 'reproduced' is adjective-safe ("the
+# reproduced results"), so only first-person subjects are matched there.
+VERB_CLAIM_PATTERNS = [
+    r"\b\w+\s+reproduces\b",
+    r"\b\w+\s+reproduce\b",
+    r"\b(?:we|i|they)\s+reproduced\b",
+]
+
 # Matches context that quotes the rules rather than asserting a verdict
 # (e.g. 'the AI must not say the paper "reproduces"').
 QUOTED_CONTEXT = re.compile(r"[\"'\u201c(]")
@@ -39,7 +49,16 @@ QUOTED_CONTEXT = re.compile(r"[\"'\u201c(]")
 NEGATION_BEFORE = re.compile(
     r"\b(must not|may not|never|not|no|cannot|whether|if)\b", re.IGNORECASE)
 
+# Non-assertive contexts: ease/attempt/modality wording before the verb
+# ("easy to reproduce", "aiming to reproduce") is not a claim.
+NON_ASSERTIVE_BEFORE = re.compile(
+    r"\b(easy|easier|hard|harder|difficult|impossible|simple|try|tries|trying|"
+    r"tried|attempt|attempts|attempting|aim|aims|aiming|hope|hopes|hoping|"
+    r"meant|designed|help|helps|helping|allow|allows|enables?|need|needs|"
+    r"needed|able|unable|how|what|whether)\b", re.IGNORECASE)
+
 _COMPILED = [(p, re.compile(p, re.IGNORECASE)) for p in VERDICT_PHRASES]
+_COMPILED_VERBS = [(p, re.compile(p, re.IGNORECASE)) for p in VERB_CLAIM_PATTERNS]
 
 
 class VerdictClaimError(RuntimeError):
@@ -50,19 +69,28 @@ def _match_tolerated(line: str, match_start: int) -> bool:
     prefix = line[:match_start]
     if QUOTED_CONTEXT.search(prefix[-2:]):
         return True
-    return bool(NEGATION_BEFORE.search(prefix))
+    if NEGATION_BEFORE.search(prefix):
+        return True
+    return bool(NON_ASSERTIVE_BEFORE.search(prefix))
 
 
 def scan_for_verdict_claims(text: str) -> list[str]:
     """Return the list of verdict phrases found in ``text``.
 
-    Lines that merely quote, negate, or question the rule (e.g. 'the AI must
-    not say the paper "reproduces"', 'NOT a statement that the paper
-    reproduces') are tolerated.
+    Tolerated: lines that quote, negate, question, or modalize the claim
+    ('the AI must not say the paper "reproduces"', 'NOT a statement that
+    the paper reproduces', 'whether the run reproduces', 'easy to
+    reproduce'). A negation AFTER the match does NOT tolerate anything:
+    'this run reproduces it, not partially' is a verdict claim with
+    clever wording and is flagged.
     """
     findings: list[str] = []
     for line in text.splitlines():
         for phrase, rx in _COMPILED:
+            m = rx.search(line)
+            if m and not _match_tolerated(line, m.start()):
+                findings.append(phrase)
+        for phrase, rx in _COMPILED_VERBS:
             m = rx.search(line)
             if m and not _match_tolerated(line, m.start()):
                 findings.append(phrase)
