@@ -1,5 +1,6 @@
 """Tests for the run-capture harness."""
 
+import hashlib
 import json
 import subprocess
 import sys
@@ -154,3 +155,42 @@ def test_capture_ignores_environment_yaml(tmp_path):
     blob = json.dumps(run)
     assert "environment.yaml" not in blob
     assert "torch" not in blob
+
+
+def test_capture_records_pip_freeze_and_dataset_hashes(tmp_path):
+    # The harness's core job: record the real pip freeze and exact
+    # dataset hashes, with nothing evaluative about them.
+    data = tmp_path / "data"
+    data.mkdir()
+    bg = data / "images_background.zip"
+    ev = data / "images_evaluation.zip"
+    bg.write_bytes(b"background-bytes")
+    ev.write_bytes(b"evaluation-bytes")
+
+    run = capture_run(
+        tmp_path,
+        [[sys.executable, "-c", "print('train')"]],
+        cwd=tmp_path,
+        hash_dirs=[data],
+    )
+    env = run["environment_actually_used"]
+
+    # pip freeze: captured from the same interpreter as a fresh freeze.
+    freeze = env.get("pip_freeze")
+    assert isinstance(freeze, list) and freeze, "pip freeze not recorded"
+    fresh = subprocess.run(
+        [sys.executable, "-m", "pip", "freeze"],
+        capture_output=True, text=True, check=True)
+    fresh_lines = [l for l in fresh.stdout.strip().splitlines() if l]
+    assert sorted(freeze) == sorted(fresh_lines)
+
+    # dataset hashes: every file pinned with exact SHA-256 and size.
+    hashes = env["dataset_hashes"]
+    assert str(data) in hashes
+    files = hashes[str(data)]["files"]
+    for path, expected_bytes in [(bg, b"background-bytes"),
+                                (ev, b"evaluation-bytes")]:
+        entry = files[path.name]
+        assert entry["sha256"] == hashlib.sha256(expected_bytes).hexdigest()
+        assert entry["bytes"] == len(expected_bytes)
+    assert hashes[str(data)]["total_files"] == 2
