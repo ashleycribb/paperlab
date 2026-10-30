@@ -44,7 +44,29 @@ paperlab capture cases/arxiv-1703.05175 --hash-dir data/omniglot \
   --results-file results.json -- python scripts/train/few_shot/run_train.py
 ```
 
-`capture` wraps the student's commands and records what was **actually** run: exact commands with exit codes, timestamps, durations, and content-hashed logs (`run_logs/`); the real environment (OS, CPU, RAM, GPUs, Python, full `pip freeze`, git HEAD of the code checkout); and SHA-256 pins for dataset directories. Environment variables are never captured, and log text is scanned and redacted for credential patterns before being written. The output passes the verdict guard before it is written. `diff` then computes deltas and within-CI flags, and writes a run record whose `human_verdict` is null until a professor fills and signs it.
+`capture` wraps the student's commands and records what was **actually** run: exact commands with exit codes, timestamps, durations, and content-hashed logs (`run_logs/`); the real environment (OS, CPU, RAM, GPUs, Python, full `pip freeze`, git HEAD of the code checkout); and SHA-256 pins for dataset directories. `diff` then computes deltas and within-CI flags, and writes a run record whose `human_verdict` is null until a professor fills and signs it.
+
+## Capture harness contract
+
+The harness is a recording instrument, not an evaluator. Its contract, enforced in code and pinned by tests (`tests/test_capture.py`):
+
+**It records — exhaustively and mechanically:**
+- the exact commands, exit codes, UTC start/end times, durations
+- full logs, written to `run_logs/` with SHA-256 content hashes
+- the environment actually used: OS, CPU, RAM, GPUs, Python, the complete `pip freeze`, git HEAD of the code checkout
+- SHA-256 pins for every file under each `--hash-dir` (datasets)
+
+**It never judges:**
+- it does not compare the captured environment against the case's `environment.yaml` — it does not even read it (`test_capture_ignores_environment_yaml`)
+- it never marks an environment correct/incorrect, expected/unexpected, or pass/fail; no evaluative keys appear in `run.json` (`test_capture_is_purely_descriptive`)
+- exit codes and "command failed" notes are observations about the command, not verdicts about the experiment
+
+**It never leaks:**
+- environment variables are not captured at all
+- log text is scanned and redacted for credential patterns (key=value secrets, AWS/JWT/hex blobs) before being written
+- outputs pass the verdict guard before being written, so a verdict claim in any string value blocks the write
+
+Whether the recorded environment is acceptable, and whether the run supports the paper, are decisions recorded only in the human-signed verdict field on the run record.
 
 ## The bundled case
 
